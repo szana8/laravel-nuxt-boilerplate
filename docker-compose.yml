@@ -29,7 +29,7 @@ services:
             - '${VITE_PORT:-5173}:${VITE_PORT:-5173}'
             - '${NUXT_PORT:-3000}:3000'
         volumes:
-            - ./:/var/www
+            - ./api:/var/www
             - ./docker/nginx/conf.d/:/etc/nginx/conf.d/
         environment:
             - APP_URL=${APP_CONTAINER_NAME}.test
