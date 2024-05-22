@@ -23,9 +23,13 @@ class LoginController extends Controller
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
 
-            return response()->json('Login successful');
+            return response()->json([
+                'message' => 'You are logged in successfully.',
+            ]);
         }
 
-        return response()->json('The provided credentials do not match our records.');
+        return response()->json([
+            'message' => 'Invalid credentials.',
+        ], 401);
     }
 }
