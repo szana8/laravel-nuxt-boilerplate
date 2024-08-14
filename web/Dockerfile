@@ -10,7 +10,7 @@ COPY . .
 
 #RUN npm i nuxt
 #RUN npm cache clean --force
-#RUN npm run dev
+# RUN npm run dev
 
 EXPOSE 3000
 

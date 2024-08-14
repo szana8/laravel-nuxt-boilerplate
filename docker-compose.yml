@@ -6,7 +6,6 @@ services:
             dockerfile: ./api/Dockerfile
         extra_hosts:
             - 'host.docker.internal:host-gateway'
-        image: digitalocean.com/php
         container_name: ${APP_CONTAINER_NAME}-workspace
         tty: true
         working_dir: /var/www
