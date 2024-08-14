@@ -2,7 +2,7 @@ FROM node:18.15
 
 RUN mkdir -p /usr/src/nuxt-app
 
-COPY package.json /usr/src/nuxt-app
+#COPY package.json /usr/src/nuxt-app
 
 WORKDIR /usr/src/nuxt-app
 
