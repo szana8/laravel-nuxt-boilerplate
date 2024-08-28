@@ -1,3 +1,6 @@
 <template>
-  <nuxt-link to="/">Home page</nuxt-link>
+  <div>
+    <LoginForm />
+  </div>
 </template>
+
