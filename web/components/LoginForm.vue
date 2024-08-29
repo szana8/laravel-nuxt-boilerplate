@@ -40,17 +40,26 @@
 </template>
 
 <script setup lang="ts">
+import { navigateTo } from '#imports'
+
 const username = ref('')
 const password = ref('')
 
 const login = async () => {
-  await $fetch('/api/auth/login', {
-    method: 'POST',
-    body: {
-      username: username.value,
-      password: password.value
-    }
-  });
+  try {
+    await $fetch('/api/auth/login', {
+      method: 'POST',
+      body: {
+        username: username.value,
+        password: password.value
+      }
+    });
+
+    navigateTo('/dashboard');
+  } catch (error) {
+    console.error(error);
+  }
+
 }
 
 </script>

@@ -43,10 +43,12 @@ services:
             dockerfile: ./web/Dockerfile
         container_name: ${APP_CONTAINER_NAME}-nuxt
         tty: true
+        #command: npm run dev
         volumes:
             - ./web:/usr/src/nuxt-app
-        #ports:
-        #    - '${NUXT_PORT:-3000}:3000'
+        ports:
+            # - '${NUXT_PORT:-3000}:3000'
+            - "24678:24678"
         networks:
             - app-network
 
@@ -73,8 +75,8 @@ services:
         container_name: ${APP_CONTAINER_NAME}-redis
         command: redis-server --requirepass ${REDIS_PASSWORD}
         tty: true
-        ports:
-            - '${REDIS_PORT}:6379'
+        # ports:
+            # - '${REDIS_PORT}:6379'
         networks:
             - app-network
 

@@ -19,5 +19,7 @@ export default defineEventHandler(async (event) => {
     if (data.access_token) {
         console.log('Login successful')
         setCookie(event, 'token', data.access_token)
+
+        return sendRedirect(event, "/dashboard");
     }
 })

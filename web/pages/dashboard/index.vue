@@ -1,14 +1,11 @@
 <template>
   <div>
     <h1 class="font-bold text-2xl text-center mt-6">Dashboard</h1>
-
-    <div>Name: {{ data.name}} </div>
-    <div>Email: {{ data.email}} </div>
   </div>
 </template>
 
 <script setup lang="ts">
 
-const { data } = await useCustomFetch<[]>('/api/user', {'Accept': 'application/json'});
+//const { data } = await useCustomFetch<[]>('/api/user');
 
 </script>
