@@ -46,9 +46,6 @@ services:
         #command: npm run dev
         volumes:
             - ./web:/usr/src/nuxt-app
-        ports:
-            # - '${NUXT_PORT:-3000}:3000'
-            - "24678:24678"
         networks:
             - app-network
 

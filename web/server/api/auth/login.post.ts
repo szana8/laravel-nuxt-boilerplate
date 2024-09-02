@@ -1,4 +1,6 @@
-export default defineEventHandler(async (event) => {
+import customFetch from '~/plugins/customFetch'
+
+export default defineEventHandler(async event => {
     const { username, password } = await readBody(event)
 
     const data: any = await $fetch('/oauth/token', {
@@ -6,6 +8,7 @@ export default defineEventHandler(async (event) => {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
+            Accept: 'application/json',
         },
         body: JSON.stringify({
             grant_type: 'password',
@@ -13,13 +16,35 @@ export default defineEventHandler(async (event) => {
             client_secret: process.env.LARAVEL_CLIENT_SECRET,
             username: username,
             password: password,
+            scope: '',
         }),
-    });
+        onResponse({ response }) {
+            if (response.status !== 200) {
+                throw createError({
+                    statusCode: response.status,
+                    statusMessage: 'Invalid credentials',
+                })
+            }
+        },
+    })
 
     if (data.access_token) {
-        console.log('Login successful')
-        setCookie(event, 'token', data.access_token)
+        setCookie(event, 'token', data.access_token, {
+            httpOnly: true,
+            maxAge: 60 * 60 * 24 * 7, // 1 week
+            secure: true,
+            sameSite: 'lax',
+        })
 
-        return sendRedirect(event, "/dashboard");
+        await setUserSession(event, {
+            token: data.access_token,
+            user: {
+                name: 'John Doe',
+            },
+        })
+
+        return Promise.resolve()
     }
+
+    console.error('Error logging in', data)
 })
