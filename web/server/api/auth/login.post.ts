@@ -1,5 +1,3 @@
-import customFetch from '~/plugins/customFetch'
-
 export default defineEventHandler(async event => {
     const { username, password } = await readBody(event)
 
