@@ -2,7 +2,7 @@ export default defineEventHandler(async event => {
     const { username, password } = await readBody(event)
 
     const data: any = await $fetch('/oauth/token', {
-        baseURL: process.env.LARAVEL_BACKEND_URL,
+        baseURL: process.env.BACKEND_URL,
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -10,8 +10,8 @@ export default defineEventHandler(async event => {
         },
         body: JSON.stringify({
             grant_type: 'password',
-            client_id: process.env.LARAVEL_CLIENT_ID,
-            client_secret: process.env.LARAVEL_CLIENT_SECRET,
+            client_id: process.env.CLIENT_ID,
+            client_secret: process.env.CLIENT_SECRET,
             username: username,
             password: password,
             scope: '',

@@ -2,7 +2,7 @@ export default defineNuxtPlugin(() => {
     const userAuth = useCookie('token')
 
     const $customFetch = $fetch.create({
-        baseURL: process.env.LARAVEL_BACKEND_URL,
+        baseURL: process.env.BACKEND_URL,
         onRequest({ request, options, error }) {
             // Add default headers
             options.headers =
