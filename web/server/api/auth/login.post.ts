@@ -37,7 +37,6 @@ export default defineEventHandler(async event => {
         })
 
         await setUserSession(event, {
-            token: data.access_token,
             user: {
                 name: 'John Doe',
             },
