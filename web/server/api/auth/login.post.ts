@@ -34,7 +34,7 @@ export default defineEventHandler(async event => {
             sameSite: 'lax',
         })
 
-        await setUserSession(event, {
+        const { user } = await setUserSession(event, {
             user: {
                 name: 'John Doe',
             },

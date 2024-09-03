@@ -9,7 +9,9 @@
 </template>
 
 <script setup lang="ts">
-const { loggedIn, user, session, fetch, clear } = useUserSession()
+const { loggedIn, user, session, clear } = useUserSession()
 
-//const data = await useCustomFetch<[]>('/api/user')
+definePageMeta({
+    middleware: ['auth'],
+})
 </script>

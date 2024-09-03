@@ -118,8 +118,9 @@ const login = async () => {
                 password: password.value,
             },
         }).then(() => {
-            fetch()
-            navigateTo('/dashboard')
+            fetch().then(() => {
+                navigateTo('/dashboard')
+            })
         })
     } catch (error: any) {
         errorMessage.value = error.statusMessage
