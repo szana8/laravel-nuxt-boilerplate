@@ -1,7 +1,9 @@
 // auth.d.ts
-import type { User } from '#auth-utils'
-
 declare module '#auth-utils' {
+    interface User {
+        name: ?string
+    }
+
     interface UserSession {
         user?: User
     }
