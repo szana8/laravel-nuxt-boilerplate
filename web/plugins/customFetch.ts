@@ -1,5 +1,5 @@
 export default defineNuxtPlugin(() => {
-    const userAuth = useCookie('token')
+    const { session } = useUserSession()
 
     const $customFetch = $fetch.create({
         baseURL: process.env.BACKEND_URL,
@@ -10,9 +10,9 @@ export default defineNuxtPlugin(() => {
             options.headers['Accept'] = 'application/json'
             options.headers['Content-Type'] = 'application/json'
 
-            if (userAuth.value) {
+            if (session.value.token) {
                 // Add Authorization header
-                options.headers.Authorization = `Bearer ${userAuth.value}`
+                options.headers.Authorization = `Bearer ${session.value.token}`
             }
         },
         onResponse({ response }) {

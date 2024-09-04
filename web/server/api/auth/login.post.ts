@@ -27,17 +27,11 @@ export default defineEventHandler(async event => {
     })
 
     if (data.access_token) {
-        setCookie(event, 'token', data.access_token, {
-            httpOnly: true,
-            maxAge: 60 * 60 * 24 * 7, // 1 week
-            secure: true,
-            sameSite: 'lax',
-        })
-
         const { user } = await setUserSession(event, {
             user: {
-                name: 'John Doe',
+                name: username,
             },
+            token: data.access_token,
         })
 
         return Promise.resolve()
