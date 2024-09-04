@@ -15,11 +15,19 @@ export default defineNuxtConfig({
         },
     },
     css: ['~/assets/css/main.css'],
-    modules: ['@nuxtjs/tailwindcss', 'nuxt-auth-utils'],
+    modules: ['@nuxtjs/tailwindcss', 'nuxt-auth-utils', '@nuxt/fonts'],
     typescript: {
         shim: false,
         tsConfig: {
             include: ['~/types/*.ts'],
         },
+    },
+    fonts: {
+        families: [
+            {
+                name: 'Figtree',
+                src: 'https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap',
+            },
+        ],
     },
 })
