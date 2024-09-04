@@ -8,6 +8,12 @@ export default defineNuxtConfig({
         clientId: process.env.CLIENT_ID,
         clientSecret: process.env.CLIENT_SECRET,
     },
+    devServer: {
+        https: {
+            key: './server.key',
+            cert: './server.crt',
+        },
+    },
     css: ['~/assets/css/main.css'],
     modules: ['@nuxtjs/tailwindcss', 'nuxt-auth-utils'],
     typescript: {
