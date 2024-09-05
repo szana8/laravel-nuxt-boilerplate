@@ -1,13 +1,9 @@
 <script setup lang="ts">
-
+import Welcome from '~/components/welcome.vue'
 </script>
 
 <template>
-  <div>
-    <h1 class="font-bold text-2xl text-center mt-6">Home</h1>
-  </div>
+    <welcome />
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

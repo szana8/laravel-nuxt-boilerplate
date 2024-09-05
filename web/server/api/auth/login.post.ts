@@ -17,6 +17,7 @@ export default defineEventHandler(async event => {
             scope: '',
         }),
         onResponse({ response }) {
+            console.log(response.body)
             if (response.status !== 200) {
                 throw createError({
                     statusCode: response.status,
