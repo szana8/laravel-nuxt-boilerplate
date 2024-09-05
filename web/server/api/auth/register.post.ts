@@ -4,7 +4,8 @@ export default defineEventHandler(async event => {
     const { name, email, password, password_confirmation } = await readBody(event)
 
     let data = {}
-    let error: LaravelValidationErrors | null = null
+    let status: number = 200
+    let error: LaravelValidationErrors | null = {}
 
     await $fetch('/register', {
         baseURL: process.env.BACKEND_URL,
@@ -20,12 +21,16 @@ export default defineEventHandler(async event => {
             password_confirmation: password_confirmation,
         }),
     })
-        .then(response => {
-            //return Promise.resolve()
+        .then((response: any) => {
+            status = response.status
+            data = response.data
         })
         .catch((errs: any) => {
-            error = errs.data.errors as LaravelValidationErrors
+            status = errs.status
+            if (errs.status === 422) {
+                error = errs.data.errors as LaravelValidationErrors
+            }
         })
 
-    return { error, data }
+    return { error, data, status }
 })

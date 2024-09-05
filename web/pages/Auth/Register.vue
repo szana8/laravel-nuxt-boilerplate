@@ -11,7 +11,7 @@ let errors = ref(<NuxtFormErrors>{})
 const processing = ref(false)
 
 const submit = async () => {
-    const { error } = await $fetch('/api/auth/register', {
+    const { error, status } = await $fetch('/api/auth/register', {
         method: 'POST',
         body: {
             name: name.value,
@@ -21,7 +21,7 @@ const submit = async () => {
         },
     })
 
-    if (error) {
+    if (error && status === 422) {
         for (const [key, value] of Object.entries(error)) {
             errors.value[key] = value[0]
         }
