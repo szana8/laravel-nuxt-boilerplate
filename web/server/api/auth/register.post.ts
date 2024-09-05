@@ -6,6 +6,7 @@ export default defineEventHandler(async event => {
     let data = {}
     let status: number = 200
     let error: LaravelValidationErrors | null = {}
+    let pending = true
 
     await $fetch('/register', {
         baseURL: process.env.BACKEND_URL,
@@ -27,10 +28,11 @@ export default defineEventHandler(async event => {
         })
         .catch((errs: any) => {
             status = errs.status
+            pending = false
             if (errs.status === 422) {
                 error = errs.data.errors as LaravelValidationErrors
             }
         })
 
-    return { error, data, status }
+    return { error, data, status, pending }
 })
