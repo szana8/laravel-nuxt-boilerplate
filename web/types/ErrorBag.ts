@@ -7,3 +7,11 @@ export type ValidationError = {
         errors: ErrorBag
     }
 }
+
+export type RegisterValidationErrors = {
+    name: string
+    email: string
+    password: string
+    password_confirmation: string
+    terms: string
+}
