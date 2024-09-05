@@ -2,7 +2,6 @@
 const username = ref('')
 const password = ref('')
 const status = ref('')
-const errorMessage = ref('')
 const canResetPassword = ref(true)
 const { fetch } = useUserSession()
 useHead({
@@ -20,20 +19,20 @@ definePageMeta({
 })
 
 const login = async () => {
-    try {
-        await $fetch('/api/auth/login', {
-            method: 'POST',
-            body: {
-                username: username.value,
-                password: password.value,
-            },
-        }).then(() => {
-            fetch().then(() => {
-                navigateTo('/dashboard')
-            })
+    const { error, status } = await $fetch('/api/auth/login', {
+        method: 'POST',
+        body: {
+            username: username.value,
+            password: password.value,
+        },
+    })
+
+    if (status === 200) {
+        fetch().then(() => {
+            navigateTo('/dashboard')
         })
-    } catch (error: any) {
-        errorMessage.value = error.statusMessage
+    } else {
+        console.log('Error: ', error.message)
     }
 }
 </script>

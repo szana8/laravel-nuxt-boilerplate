@@ -1,7 +1,9 @@
 export default defineEventHandler(async event => {
     const { username, password } = await readBody(event)
+    let status: number = 200
+    let error: { [key: string]: string } = {}
 
-    const data: any = await $fetch('/oauth/token', {
+    await $fetch('/oauth/token', {
         baseURL: process.env.BACKEND_URL,
         method: 'POST',
         headers: {
@@ -16,25 +18,40 @@ export default defineEventHandler(async event => {
             password: password,
             scope: '',
         }),
-        onResponse({ response }) {
-            console.log(response.body)
-            if (response.status !== 200) {
-                throw createError({
-                    statusCode: response.status,
-                    statusMessage: 'Invalid credentials',
-                })
-            }
-        },
     })
-
-    if (data.access_token) {
-        const { user } = await setUserSession(event, {
-            user: {
-                name: username,
-            },
-            token: data.access_token,
+        .then(async (response: any) => {
+            await $fetch('/api/user', {
+                baseURL: process.env.BACKEND_URL,
+                headers: {
+                    'Content-Type': 'application/json',
+                    Accept: 'application/json',
+                    Authorization: `Bearer ${response.access_token}`,
+                },
+            })
+                .then(async (response: any) => {
+                    status = 200
+                    await setUserSession(event, {
+                        user: {
+                            name: response.name,
+                            email: response.email,
+                            two_factor_confirmed_at: response.two_factor_confirmed_at,
+                        },
+                        token: response.access_token,
+                    })
+                })
+                .catch((err: any) => {
+                    status = 500
+                    error = {
+                        message: 'Error fetching user data.',
+                    }
+                })
+        })
+        .catch((err: any) => {
+            status = 500
+            error = {
+                message: 'The provided credentials are incorrect.',
+            }
         })
 
-        return Promise.resolve()
-    }
+    return { error, status }
 })
