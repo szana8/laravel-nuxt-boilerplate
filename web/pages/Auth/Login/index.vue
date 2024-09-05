@@ -15,6 +15,10 @@ useHead({
     ],
 })
 
+definePageMeta({
+    middleware: ['auth'],
+})
+
 const login = async () => {
     console.log(username.value)
     try {

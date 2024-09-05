@@ -1,8 +1,5 @@
 <template>
-    <NuxtLayout class="font-sans antialiased">
-        <NuxtPage />
-    </NuxtLayout>
+    <NuxtPage />
 </template>
-<script setup lang="ts">
-import ApplicationLayout from '~/layouts/default.vue'
-</script>
+
+<script setup lang="ts"></script>
