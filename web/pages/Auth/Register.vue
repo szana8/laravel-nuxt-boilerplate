@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { RegisterValidationErrors } from '~/types/ErrorBag'
+import type { NuxtFormErrors } from '~/types/ErrorBag'
 
 const name = ref('')
 const email = ref('')
@@ -7,11 +7,25 @@ const password = ref('')
 const password_confirmation = ref('')
 const terms = ref(false)
 const hasTermsAndPrivacyPolicyFeature = ref(false)
-const errors = ref({} as RegisterValidationErrors)
+let errors = ref(<NuxtFormErrors>{})
 const processing = ref(false)
 
-const submit = () => {
-    // ...
+const submit = async () => {
+    const { error } = await $fetch('/api/auth/register', {
+        method: 'POST',
+        body: {
+            name: name.value,
+            password: password.value,
+            email: email.value,
+            password_confirmation: password_confirmation.value,
+        },
+    })
+
+    if (error) {
+        for (const [key, value] of Object.entries(error)) {
+            errors.value[key] = value[0]
+        }
+    }
 }
 </script>
 
@@ -24,32 +38,32 @@ const submit = () => {
         <form @submit.prevent="submit">
             <div>
                 <InputLabel for="name" value="Name" />
-                <TextInput id="name" v-model="name" type="text" class="mt-1 block w-full" required autofocus autocomplete="name" />
+                <TextInput id="name" v-model="name" type="text" class="mt-1 block w-full" autofocus autocomplete="name" />
                 <InputError class="mt-2" :message="errors.name" />
             </div>
 
             <div class="mt-4">
                 <InputLabel for="email" value="Email" />
-                <TextInput id="email" v-model="email" type="email" class="mt-1 block w-full" required autocomplete="username" />
+                <TextInput id="email" v-model="email" type="email" class="mt-1 block w-full" autocomplete="username" />
                 <InputError class="mt-2" :message="errors.email" />
             </div>
 
             <div class="mt-4">
                 <InputLabel for="password" value="Password" />
-                <TextInput id="password" v-model="password" type="password" class="mt-1 block w-full" required autocomplete="new-password" />
+                <TextInput id="password" v-model="password" type="password" class="mt-1 block w-full" autocomplete="new-password" />
                 <InputError class="mt-2" :message="errors.password" />
             </div>
 
             <div class="mt-4">
                 <InputLabel for="password_confirmation" value="Confirm Password" />
-                <TextInput id="password_confirmation" v-model="password_confirmation" type="password" class="mt-1 block w-full" required autocomplete="new-password" />
+                <TextInput id="password_confirmation" v-model="password_confirmation" type="password" class="mt-1 block w-full" autocomplete="new-password" />
                 <InputError class="mt-2" :message="errors.password_confirmation" />
             </div>
 
             <div v-if="hasTermsAndPrivacyPolicyFeature" class="mt-4">
                 <InputLabel for="terms">
                     <div class="flex items-center">
-                        <Checkbox id="terms" v-model:checked="terms" name="terms" required />
+                        <Checkbox id="terms" v-model:checked="terms" name="terms" />
 
                         <div class="ms-2">
                             I agree to the

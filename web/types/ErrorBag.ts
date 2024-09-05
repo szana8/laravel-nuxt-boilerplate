@@ -8,10 +8,10 @@ export type ValidationError = {
     }
 }
 
-export type RegisterValidationErrors = {
-    name: string
-    email: string
-    password: string
-    password_confirmation: string
-    terms: string
+export type LaravelValidationErrors = {
+    [key: string]: string[]
+}
+
+export type NuxtFormErrors = {
+    [key: string]: string
 }
