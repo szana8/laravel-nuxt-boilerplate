@@ -4,13 +4,19 @@ import type { NuxtFormErrors } from '~/types/ErrorBag'
 const name = ref('')
 const email = ref('')
 const password = ref('')
-const password_confirmation = ref('')
 const terms = ref(false)
+const password_confirmation = ref('')
 const hasTermsAndPrivacyPolicyFeature = ref(false)
+
 let errors = ref(<NuxtFormErrors>{})
 const processing = ref(false)
 
+const clearErrors = () => {
+    errors.value = ref(<NuxtFormErrors>{}).value
+}
+
 const submit = async () => {
+    processing.value = true
     const { error, status } = await $fetch('/api/auth/register', {
         method: 'POST',
         body: {
@@ -21,7 +27,9 @@ const submit = async () => {
         },
     })
 
+    processing.value = false
     if (error && status === 422) {
+        clearErrors()
         for (const [key, value] of Object.entries(error)) {
             errors.value[key] = value[0]
         }

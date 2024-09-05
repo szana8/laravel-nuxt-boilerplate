@@ -37,6 +37,4 @@ export default defineEventHandler(async event => {
 
         return Promise.resolve()
     }
-
-    console.error('Error logging in', data)
 })
