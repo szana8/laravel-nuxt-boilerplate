@@ -18,6 +18,10 @@ services:
             - ./docker/php/error_reporting.ini:/usr/local/etc/php/conf.d/error_reporting.ini
         networks:
             - app-network
+        depends_on:
+            - mysql
+            - redis
+            - nuxt
 
     #Nginx Service
 #    nginx:

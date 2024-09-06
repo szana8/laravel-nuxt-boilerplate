@@ -136,7 +136,7 @@ const logout = () => {
                                         <!-- Account Management -->
                                         <div class="block px-4 py-2 text-xs text-gray-400">Manage Account</div>
 
-                                        <DropdownLink href="/"> Profile </DropdownLink>
+                                        <DropdownLink href="/profile"> Profile </DropdownLink>
 
                                         <DropdownLink v-if="hasApiFeatures" href="/"> API Tokens </DropdownLink>
 

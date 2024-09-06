@@ -5,8 +5,8 @@ export default defineEventHandler(async event => {
 
     let data = {}
     let status: number = 200
-    let error: LaravelValidationErrors | null = {}
     let pending = true
+    let error: LaravelValidationErrors | string | null = {}
 
     await $fetch('/register', {
         baseURL: process.env.BACKEND_URL,
@@ -22,15 +22,19 @@ export default defineEventHandler(async event => {
             password_confirmation: password_confirmation,
         }),
     })
-        .then((response: any) => {
+        .then(async (response: any) => {
+            pending = false
             status = response.status
             data = response.data
         })
-        .catch((errs: any) => {
+        .catch(async (errs: any) => {
             status = errs.status
             pending = false
             if (errs.status === 422) {
                 error = errs.data.errors as LaravelValidationErrors
+            } else {
+                error = 'Something went wrong'
+                status = 500
             }
         })
 

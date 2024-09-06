@@ -35,6 +35,9 @@ export default defineEventHandler(async event => {
                             name: response.name,
                             email: response.email,
                             two_factor_confirmed_at: response.two_factor_confirmed_at,
+                            email_verified_at: response.email_verified_at,
+                            profile_photo_url: 'https://i.pravatar.cc/150?u=1',
+                            profile_photo_path: '',
                         },
                         token: response.access_token,
                     })
@@ -46,7 +49,8 @@ export default defineEventHandler(async event => {
                     }
                 })
         })
-        .catch((err: any) => {
+        .catch(async (err: any) => {
+            console.log(err)
             status = 500
             error = {
                 message: 'The provided credentials are incorrect.',

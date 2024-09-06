@@ -4,6 +4,9 @@ declare module '#auth-utils' {
         name: ?string
         email: ?string
         two_factor_confirmed_at: ?string
+        email_verified_at: ?string
+        profile_photo_url: ?string
+        profile_photo_path: ?string
     }
 
     interface UserSession {

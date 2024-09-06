@@ -15,3 +15,7 @@ export type LaravelValidationErrors = {
 export type NuxtFormErrors = {
     [key: string]: string
 }
+
+export type BackendErrors = {
+    [key: number]: any
+}

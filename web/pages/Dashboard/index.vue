@@ -1,3 +1,19 @@
+<script setup lang="ts">
+definePageMeta({
+    middleware: ['auth'],
+})
+
+useHead({
+    title: 'Dashboard',
+    meta: [
+        {
+            name: 'description',
+            content: 'Dashboard content',
+        },
+    ],
+})
+</script>
+
 <template>
     <NuxtLayout>
         <template #header>
@@ -13,9 +29,3 @@
         </div>
     </NuxtLayout>
 </template>
-
-<script setup lang="ts">
-definePageMeta({
-    middleware: ['auth'],
-})
-</script>
