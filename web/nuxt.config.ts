@@ -3,6 +3,11 @@ export default defineNuxtConfig({
     devtools: {
         enabled: false,
     },
+    nitro: {
+        experimental: {
+            websocket: true,
+        },
+    },
     runtimeConfig: {
         baseUrl: process.env.BACKEND_URL,
         clientId: process.env.CLIENT_ID,

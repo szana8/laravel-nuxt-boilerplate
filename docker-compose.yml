@@ -9,9 +9,9 @@ services:
         container_name: ${APP_CONTAINER_NAME}-workspace
         tty: true
         working_dir: /var/www
-        command: bash -c 'php artisan migrate && php artisan serve --host 0.0.0.0'
+        command: bash -c 'php artisan migrate && php artisan serve --host 0.0.0.0 --port=${APP_PORT}'
         ports:
-            - "8000:8000" #reverb port
+            - "${APP_PORT}:${APP_PORT}" #reverb port
         volumes:
             - ./api:/var/www
             - ./docker/php/local.ini:/usr/local/etc/php/conf.d/999-overrides.ini
@@ -48,7 +48,7 @@ services:
             dockerfile: ./web/Dockerfile
         container_name: ${APP_CONTAINER_NAME}-nuxt
         tty: true
-        command: bash -c 'npm run dev'
+        # command: bash -c 'npm run dev'
         ports:
             - '${NUXT_PORT:-3000}:3000'
         volumes:
