@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { useWebhookClient } from '~/composables/useWebhookClient'
+import type Echo from 'laravel-echo'
+
 definePageMeta({
     middleware: ['auth'],
 })
@@ -11,6 +14,13 @@ useHead({
             content: 'Dashboard content',
         },
     ],
+})
+const client: Echo = useWebhookClient()
+
+console.log('Test')
+
+const l = client.listen('chat.1', '.testing', (e: any) => {
+    console.log('Event', e)
 })
 </script>
 

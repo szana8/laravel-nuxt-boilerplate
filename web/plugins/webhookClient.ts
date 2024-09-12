@@ -13,20 +13,25 @@ export default defineNuxtPlugin(() => {
 
     const { session } = useUserSession()
 
-    window.Echo = new Echo({
+    const $webhookClient: Echo = new Echo({
         broadcaster: 'reverb',
-        key: 'xbrpxrdrglhzczsfdrnx',
-        wsHost: 'workspace',
-        wssHost: 'workspace',
+        key: 'tdt0ynwuwmxb0unsuq8j',
+        wsHost: 'localhost',
         wsPort: 8080,
-        wssPort: 8080,
         forceTLS: false,
+        encrypted: false,
         enabledTransports: ['ws'],
-        authEndpoint: 'api/broadcasting/auth',
-        auth: {
-            headers: {
-                Authorization: 'Bearer ' + session.value.token,
-            },
-        },
+        // authEndpoint: 'http://workspace/api/broadcasting/auth',
+        // auth: {
+        //     headers: {
+        //         Authorization: 'Bearer ' + session.value.token,
+        //     },
+        // },
     })
+
+    return {
+        provide: {
+            webhookClient: $webhookClient,
+        },
+    }
 })

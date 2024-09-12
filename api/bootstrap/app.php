@@ -13,10 +13,10 @@ return Application::configure(basePath: dirname(__DIR__))
         channels: __DIR__.'/../routes/channels.php',
         health: '/up',
     )
-    ->withBroadcasting(
-         __DIR__.'/../routes/channels.php',
-        ['prefix' => 'api', 'middleware' => 'auth:api']
-    )
+//    ->withBroadcasting(
+//         __DIR__.'/../routes/channels.php',
+//        ['prefix' => 'api', 'middleware' => '']
+//    )
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->alias([
             'client' => CheckClientCredentials::class
