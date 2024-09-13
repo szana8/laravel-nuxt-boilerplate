@@ -3,6 +3,8 @@ export default defineEventHandler(async event => {
     let status: number = 200
     let error: { [key: string]: string } = {}
 
+    console.log(process.env.BACKEND_URL)
+
     await $fetch('/oauth/token', {
         baseURL: process.env.BACKEND_URL,
         method: 'POST',

@@ -1,5 +1,5 @@
 up:
-	docker compose up -d
+	docker compose up -d --force-recreate
 
 bash-php:
 	docker compose exec workspace bash

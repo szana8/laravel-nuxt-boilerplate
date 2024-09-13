@@ -15,8 +15,8 @@ export default defineNuxtConfig({
     },
     devServer: {
         https: {
-            key: './server.key',
-            cert: './server.crt',
+            key: '/etc/ssl/certs/laravel/local_certificate.key',
+            cert: '/etc/ssl/certs/laravel/local_certificate.crt',
         },
     },
     css: ['~/assets/css/main.css'],
