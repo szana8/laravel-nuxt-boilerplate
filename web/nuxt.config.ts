@@ -14,10 +14,10 @@ export default defineNuxtConfig({
         clientSecret: process.env.CLIENT_SECRET,
     },
     devServer: {
-        /*https: {
+        https: {
             key: './server.key',
             cert: './server.crt',
-        },*/
+        },
     },
     css: ['~/assets/css/main.css'],
     modules: ['@nuxtjs/tailwindcss', 'nuxt-auth-utils', '@nuxt/fonts'],
