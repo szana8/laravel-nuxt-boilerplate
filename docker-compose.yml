@@ -52,9 +52,6 @@ services:
             dockerfile: ./web/Dockerfile
         container_name: ${APP_CONTAINER_NAME}-nuxt
         tty: true
-        # command: [/usr/bin/sh -c 'cat /etc/ssl/certs/laravel/local_certificate.pem >> /etc/ssl/certs/ca-certificates.crt']
-        # ports:
-        #    - '${NUXT_PORT:-3000}:3000'
         environment:
             - NODE_EXTRA_CA_CERTS=/etc/ssl/certs/laravel/local_certificate.pem
             - NODE_TLS_REJECT_UNAUTHORIZED=0
