@@ -13,15 +13,16 @@ export default defineNuxtPlugin(() => {
 
     const { session } = useUserSession()
 
+    console.log('session.value.token', session.value.token)
+
     const $webhookClient: Echo = new Echo({
         broadcaster: 'reverb',
         key: 'tdt0ynwuwmxb0unsuq8j',
-        wsHost: 'nuxt.laravel.test',
-        wsPort: 443,
-        //forceTLS: false,
-        //useTLS: false,
-        //encrypted: false,
-        enabledTransports: ['ws'],
+        wsHost: 'localhost',
+        wsPort: 8090,
+        wssPort: 8090,
+        forceTLS: true,
+        enabledTransports: ['ws', 'wss'],
         // authEndpoint: 'http://workspace/api/broadcasting/auth',
         // auth: {
         //     headers: {
