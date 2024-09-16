@@ -11,24 +11,16 @@ declare global {
 export default defineNuxtPlugin(() => {
     window.Pusher = Pusher
 
-    const { session } = useUserSession()
-
-    console.log('session.value.token', session.value.token)
+    const config = useRuntimeConfig().public
 
     const $webhookClient: Echo = new Echo({
         broadcaster: 'reverb',
-        key: 'tdt0ynwuwmxb0unsuq8j',
-        wsHost: 'localhost',
-        wsPort: 8090,
-        wssPort: 8090,
+        key: config.key,
+        wsHost: config.websocketURL,
+        wsPort: config.port,
+        wssPort: config.port,
         forceTLS: true,
         enabledTransports: ['ws', 'wss'],
-        // authEndpoint: 'http://workspace/api/broadcasting/auth',
-        // auth: {
-        //     headers: {
-        //         Authorization: 'Bearer ' + session.value.token,
-        //     },
-        // },
     })
 
     return {

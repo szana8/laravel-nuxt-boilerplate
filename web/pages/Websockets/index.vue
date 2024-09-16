@@ -17,8 +17,6 @@ useHead({
 })
 const client: Echo = useWebhookClient()
 
-console.log('Test')
-
 const l = client.listen('chat.1', '.testing', (e: any) => {
     console.log('Event', e)
 })

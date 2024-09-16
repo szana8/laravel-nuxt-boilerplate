@@ -12,6 +12,11 @@ export default defineNuxtConfig({
         baseUrl: process.env.BACKEND_URL,
         clientId: process.env.CLIENT_ID,
         clientSecret: process.env.CLIENT_SECRET,
+        public: {
+            websocketURL: process.env.WEBSOCKET_URL,
+            port: process.env.WEBSOCKET_PORT,
+            key: process.env.WEBSOCKET_KEY,
+        },
     },
     devServer: {
         /*https: {
