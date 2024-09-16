@@ -1,18 +1,10 @@
 import Echo from 'laravel-echo'
 import Pusher from 'pusher-js'
 
-declare global {
-    interface Window {
-        Pusher: any
-    }
-}
-
 export default defineNuxtPlugin(() => {
-    window.Pusher = Pusher
-
     const config = useRuntimeConfig().public
 
-    const $webhookClient: Echo = new Echo({
+    const options: any = {
         broadcaster: 'reverb',
         key: config.key,
         wsHost: config.websocketURL,
@@ -20,6 +12,12 @@ export default defineNuxtPlugin(() => {
         wssPort: config.port,
         forceTLS: true,
         enabledTransports: ['ws', 'wss'],
+        cluster: 'mt1',
+    }
+
+    const $webhookClient: Echo = new Echo({
+        ...options,
+        client: new Pusher(options.key, options),
     })
 
     return {
