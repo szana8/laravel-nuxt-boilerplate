@@ -16,10 +16,11 @@ export default defineNuxtPlugin(() => {
     const $webhookClient: Echo = new Echo({
         broadcaster: 'reverb',
         key: 'tdt0ynwuwmxb0unsuq8j',
-        wsHost: 'workspace',
-        wsPort: 8080,
-        forceTLS: false,
-        encrypted: false,
+        wsHost: 'nuxt.laravel.test',
+        wsPort: 443,
+        //forceTLS: false,
+        //useTLS: false,
+        //encrypted: false,
         enabledTransports: ['ws'],
         // authEndpoint: 'http://workspace/api/broadcasting/auth',
         // auth: {
