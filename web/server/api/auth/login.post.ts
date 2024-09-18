@@ -20,7 +20,6 @@ export default defineEventHandler(async event => {
         }),
     })
         .then(async (response: any) => {
-            console.log('Token: ', response.access_token)
             await $fetch('/api/user', {
                 baseURL: process.env.BACKEND_URL,
                 headers: {
