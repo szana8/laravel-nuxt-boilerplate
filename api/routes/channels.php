@@ -1,8 +1,9 @@
 <?php
 
+use App\Models\User;
 use Illuminate\Support\Facades\Broadcast;
 
 
-Broadcast::channel('chat.1', function () {
-    return true;
+Broadcast::channel('user.{userId}', function ($user, $userId) {
+    return (int) $user->id === (int) $userId;
 });

@@ -1,6 +1,7 @@
 // auth.d.ts
 declare module '#auth-utils' {
     interface User {
+        id: number
         name: ?string
         email: ?string
         two_factor_confirmed_at: ?string

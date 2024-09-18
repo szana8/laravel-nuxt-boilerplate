@@ -4,6 +4,8 @@ import Pusher from 'pusher-js'
 export default defineNuxtPlugin(() => {
     const config = useRuntimeConfig().public
 
+    const { session } = useUserSession()
+
     const options: any = {
         broadcaster: 'reverb',
         key: config.key,
@@ -13,6 +15,12 @@ export default defineNuxtPlugin(() => {
         forceTLS: true,
         enabledTransports: ['ws', 'wss'],
         cluster: 'mt1',
+        auth: {
+            headers: {
+                Authorization: `Bearer ${session.value.token}`,
+            },
+        },
+        authEndpoint: `https://${config.websocketURL}/broadcasting/auth`,
     }
 
     const $websocketClient: Echo = new Echo({

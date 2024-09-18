@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useWebsocketClient } from '~/composables/useWebsocketClient'
 import type Echo from 'laravel-echo'
+import { useUserSession } from '#imports'
 
 definePageMeta({
     middleware: ['auth'],
@@ -15,9 +16,11 @@ useHead({
         },
     ],
 })
-const client: Echo = useWebsocketClient()
 
-const l = client.listen('chat.1', '.testing', (e: any) => {
+const client: Echo = useWebsocketClient()
+const { user } = useUserSession()
+
+const l = client.private(`user.${user.value?.id}`).listen('.testing', (e: any) => {
     console.log('Event', e)
 })
 </script>

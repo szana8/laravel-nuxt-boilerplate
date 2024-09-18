@@ -18,12 +18,6 @@ export default defineNuxtConfig({
             key: process.env.WEBSOCKET_KEY,
         },
     },
-    devServer: {
-        /*https: {
-            key: '/etc/ssl/certs/laravel/local_certificate.key',
-            cert: '/etc/ssl/certs/laravel/local_certificate.crt',
-        },*/
-    },
     css: ['~/assets/css/main.css'],
     modules: ['@nuxtjs/tailwindcss', 'nuxt-auth-utils', '@nuxt/fonts'],
     typescript: {

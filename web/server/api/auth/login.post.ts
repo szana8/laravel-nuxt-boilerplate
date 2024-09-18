@@ -3,8 +3,6 @@ export default defineEventHandler(async event => {
     let status: number = 200
     let error: { [key: string]: string } = {}
 
-    console.log(process.env.BACKEND_URL)
-
     await $fetch('/oauth/token', {
         baseURL: process.env.BACKEND_URL,
         method: 'POST',
@@ -22,6 +20,7 @@ export default defineEventHandler(async event => {
         }),
     })
         .then(async (response: any) => {
+            console.log('Token: ', response.access_token)
             await $fetch('/api/user', {
                 baseURL: process.env.BACKEND_URL,
                 headers: {
@@ -30,14 +29,15 @@ export default defineEventHandler(async event => {
                     Authorization: `Bearer ${response.access_token}`,
                 },
             })
-                .then(async (response: any) => {
+                .then(async (userResponse: any) => {
                     status = 200
                     await setUserSession(event, {
                         user: {
-                            name: response.name,
-                            email: response.email,
-                            two_factor_confirmed_at: response.two_factor_confirmed_at,
-                            email_verified_at: response.email_verified_at,
+                            id: userResponse.id,
+                            name: userResponse.name,
+                            email: userResponse.email,
+                            two_factor_confirmed_at: userResponse.two_factor_confirmed_at,
+                            email_verified_at: userResponse.email_verified_at,
                             profile_photo_url: 'https://i.pravatar.cc/150?u=1',
                             profile_photo_path: '',
                         },
