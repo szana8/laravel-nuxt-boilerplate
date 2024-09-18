@@ -15,14 +15,14 @@ export default defineNuxtPlugin(() => {
         cluster: 'mt1',
     }
 
-    const $webhookClient: Echo = new Echo({
+    const $websocketClient: Echo = new Echo({
         ...options,
         client: new Pusher(options.key, options),
     })
 
     return {
         provide: {
-            webhookClient: $webhookClient,
+            websocketClient: $websocketClient,
         },
     }
 })

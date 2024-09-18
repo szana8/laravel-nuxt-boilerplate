@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useWebhookClient } from '~/composables/useWebhookClient'
+import { useWebsocketClient } from '~/composables/useWebsocketClient'
 import type Echo from 'laravel-echo'
 
 definePageMeta({
@@ -15,7 +15,7 @@ useHead({
         },
     ],
 })
-const client: Echo = useWebhookClient()
+const client: Echo = useWebsocketClient()
 
 const l = client.listen('chat.1', '.testing', (e: any) => {
     console.log('Event', e)

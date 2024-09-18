@@ -40,5 +40,5 @@ export default defineNuxtConfig({
             },
         ],
     },
-    plugins: ['~/plugins/customFetch.ts', '~/plugins/webhookClient.ts'],
+    plugins: ['~/plugins/customFetch.ts', '~/plugins/websocketClient.ts'],
 })
