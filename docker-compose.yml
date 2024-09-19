@@ -9,12 +9,10 @@ services:
         container_name: ${APP_CONTAINER_NAME}-workspace
         tty: true
         working_dir: /var/www
-        command: bash -c '
-                  php artisan migrate && php artisan serve --host 0.0.0.0 --port=${BACKEND_PORT} && 
-                  php artisan queue:listen && 
-                  php artisan reverb:start --debug --port=${REVERB_PORT}'
+        command: bash -c 'php artisan serve --host 0.0.0.0 --port=${BACKEND_PORT}'
         ports:
-            - "${REVERB_PORT:-8080}:${REVERB_PORT:-8080}"
+            - "8080:8080"
+            - "${BACKEND_PORT:-8000}:${BACKEND_PORT:-8000}"
         volumes:
             - ./api:/var/www
             - ./docker/php/local.ini:/usr/local/etc/php/conf.d/999-overrides.ini
@@ -34,11 +32,11 @@ services:
         ports:
             - '${SSL_BACKEND_PORT:-443}:443'
             - '${NUXT_PORT:-3000}:3000'
-            - "${BACKEND_PORT:-8090}:${BACKEND_PORT:-8090}"
+            - "${REVERB_PORT:-8090}:${REVERB_PORT:-8090}"
         volumes:
             - ./api:/var/www
             - ./docker/nginx/conf.d:/etc/nginx/conf.d
-            - ./docker/certs:/etc/nginx/ssl
+            - ./docker/certificates:/etc/nginx/ssl/certificates
         environment:
             - APP_URL=${APP_CONTAINER_NAME}.test
             - APP_WORKSPACE=${APP_CONTAINER_NAME}-workspace
@@ -58,10 +56,10 @@ services:
         tty: true
         environment:
             - NODE_TLS_REJECT_UNAUTHORIZED=0
-            - NODE_EXTRA_CA_CERTS=/etc/ssl/certs/laravel/local_certificate.pem
+            - NODE_EXTRA_CA_CERTS=/etc/ssl/certificates/test.certificate.pem
         volumes:
             - ./web:/usr/src/nuxt-app
-            - ./docker/certs/laravel:/etc/ssl/certs/laravel
+            - ./docker/certificates:/etc/ssl/certificates
         networks:
             - app-network
 
@@ -70,6 +68,8 @@ services:
         image: mysql:latest
         container_name: ${APP_CONTAINER_NAME}-db
         tty: true
+        healthcheck:
+          test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
         environment:
             - MYSQL_DATABASE=${DB_DATABASE}
             - MYSQL_USER=${DB_USERNAME}
