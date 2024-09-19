@@ -1,4 +1,4 @@
-export default defineEventHandler(async event => {
+export default defineEventHandler(async (event) => {
     const { username, password } = await readBody(event)
     let status: number = 200
     let error: { [key: string]: string } = {}
@@ -7,15 +7,15 @@ export default defineEventHandler(async event => {
         baseURL: process.env.BACKEND_URL,
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json',
             Accept: 'application/json',
+            'Content-Type': 'application/json',
         },
         body: JSON.stringify({
             grant_type: 'password',
             client_id: process.env.CLIENT_ID,
             client_secret: process.env.CLIENT_SECRET,
-            username: username,
-            password: password,
+            username,
+            password,
             scope: '',
         }),
     })
@@ -43,6 +43,7 @@ export default defineEventHandler(async event => {
                         token: response.access_token,
                     })
                 })
+
                 .catch((err: any) => {
                     status = 500
                     error = {

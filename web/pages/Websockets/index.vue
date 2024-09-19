@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { useWebsocketClient } from '~/composables/useWebsocketClient'
 import type Echo from 'laravel-echo'
 import { useUserSession } from '#imports'
+import { useWebsocketClient } from '~/composables/useWebsocketClient'
 
 definePageMeta({
     middleware: ['auth'],

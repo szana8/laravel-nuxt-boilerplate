@@ -5,8 +5,7 @@ export default defineNuxtPlugin(() => {
         baseURL: process.env.BACKEND_URL,
         onRequest({ request, options, error }) {
             // Add default headers
-            options.headers =
-                (options.headers as { [key: string]: string }) || {}
+            options.headers = (options.headers as { [key: string]: string }) || {}
             options.headers['Accept'] = 'application/json'
             options.headers['Content-Type'] = 'application/json'
 

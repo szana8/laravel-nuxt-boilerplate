@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import UpdateProfileInformationForm from './Partials/UpdateProfileInformationForm.vue'
 import UpdatePasswordForm from '~/pages/Profile/Partials/UpdatePasswordForm.vue'
 import TwoFactorAuthenticationForm from '~/pages/Profile/Partials/TwoFactorAuthenticationForm.vue'
@@ -20,11 +20,11 @@ const canManageTwoFactorAuthentication = ref(true)
 const hasAccountDeletionFeatures = ref(true)
 
 useHead({
-    title: 'Dashboard',
+    title: 'Profile',
     meta: [
         {
-            name: 'description',
-            content: 'Dashboard content',
+            name: 'profile',
+            content: 'Profile',
         },
     ],
 })

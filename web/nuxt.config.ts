@@ -19,9 +19,10 @@ export default defineNuxtConfig({
         },
     },
     css: ['~/assets/css/main.css'],
-    modules: ['@nuxtjs/tailwindcss', 'nuxt-auth-utils', '@nuxt/fonts'],
+    modules: ['@nuxtjs/tailwindcss', 'nuxt-auth-utils', '@nuxt/fonts', '@nuxt/eslint'],
     typescript: {
         shim: false,
+        strict: true,
         tsConfig: {
             include: ['~/types/*.ts'],
         },

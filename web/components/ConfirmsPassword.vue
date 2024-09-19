@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { ref, reactive, nextTick } from 'vue'
 import DialogModal from './DialogModal.vue'
 import InputError from './InputError.vue'
@@ -33,7 +33,7 @@ const form = reactive({
 const passwordInput = ref(null)
 
 const startConfirmingPassword = () => {
-    axios.get(route('password.confirmation')).then(response => {
+    axios.get(route('password.confirmation')).then((response) => {
         if (response.data.confirmed) {
             emit('confirmed')
         } else {
@@ -57,7 +57,7 @@ const confirmPassword = () => {
             closeModal()
             nextTick().then(() => emit('confirmed'))
         })
-        .catch(error => {
+        .catch((error) => {
             form.processing = false
             form.error = error.response.data.errors.password[0]
             passwordInput.value.focus()

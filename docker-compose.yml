@@ -9,10 +9,12 @@ services:
         container_name: ${APP_CONTAINER_NAME}-workspace
         tty: true
         working_dir: /var/www
-        command: bash -c 'php artisan migrate && php artisan serve --host 0.0.0.0 --port=${APP_PORT}'
+        command: bash -c '
+                  php artisan migrate && php artisan serve --host 0.0.0.0 --port=${BACKEND_PORT} && 
+                  php artisan queue:listen && 
+                  php artisan reverb:start --debug --port=${REVERB_PORT}'
         ports:
-            - "${APP_PORT}:${APP_PORT}" #reverb port
-            - "8080:8080"
+            - "${REVERB_PORT:-8080}:${REVERB_PORT:-8080}"
         volumes:
             - ./api:/var/www
             - ./docker/php/local.ini:/usr/local/etc/php/conf.d/999-overrides.ini
@@ -22,18 +24,17 @@ services:
         depends_on:
             - mysql
             - redis
-            #- nuxt
+            - nuxt
 
     #Nginx Service
     nginx:
         image: nginx:alpine
+        container_name: nginx
         tty: true
         ports:
-            - '${SSL_APP_PORT}:443'
-            #- '${VITE_PORT:-5173}:${VITE_PORT:-5173}'
+            - '${SSL_BACKEND_PORT:-443}:443'
             - '${NUXT_PORT:-3000}:3000'
-            #- '24678:24678'
-            - '8090:8090'
+            - "${BACKEND_PORT:-8090}:${BACKEND_PORT:-8090}"
         volumes:
             - ./api:/var/www
             - ./docker/nginx/conf.d:/etc/nginx/conf.d
@@ -43,6 +44,9 @@ services:
             - APP_WORKSPACE=${APP_CONTAINER_NAME}-workspace
         networks:
             - app-network
+        depends_on:
+            - workspace
+            - nuxt
 
     #Nuxt Service
     nuxt:
@@ -50,11 +54,11 @@ services:
             context: .
             dockerfile: ./web/Dockerfile
         container_name: ${APP_CONTAINER_NAME}-nuxt
-        command: bash -c 'npm run dev'
+        command: bash -c 'yarn run dev'
         tty: true
         environment:
-            - NODE_EXTRA_CA_CERTS=/etc/ssl/certs/laravel/local_certificate.pem
             - NODE_TLS_REJECT_UNAUTHORIZED=0
+            - NODE_EXTRA_CA_CERTS=/etc/ssl/certs/laravel/local_certificate.pem
         volumes:
             - ./web:/usr/src/nuxt-app
             - ./docker/certs/laravel:/etc/ssl/certs/laravel
@@ -74,7 +78,7 @@ services:
         volumes:
             - '~/.${APP_CONTAINER_NAME}/data/mysql:/var/lib/mysql'
         ports:
-            - '${DB_PORT}:3306'
+            - '${DB_PORT:-3306}:${DB_PORT:-3306}'
         networks:
             - app-network
 
@@ -84,8 +88,6 @@ services:
         container_name: ${APP_CONTAINER_NAME}-redis
         command: redis-server --requirepass ${REDIS_PASSWORD}
         tty: true
-        # ports:
-            # - '${REDIS_PORT}:6379'
         networks:
             - app-network
 

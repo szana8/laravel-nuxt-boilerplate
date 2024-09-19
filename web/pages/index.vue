@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 defineProps({
     canLogin: {
         type: Boolean,
