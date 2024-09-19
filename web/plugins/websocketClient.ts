@@ -20,7 +20,7 @@ export default defineNuxtPlugin(() => {
                 Authorization: `Bearer ${session.value.token}`,
             },
         },
-        authEndpoint: `https://${config.websocketURL}/broadcasting/auth`,
+        authEndpoint: `https://${config.websocketURL}/api/broadcasting/auth`,
     }
 
     const $websocketClient: Echo = new Echo({
