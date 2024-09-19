@@ -20,8 +20,10 @@ useHead({
 const client: Echo = useWebsocketClient()
 const { user } = useUserSession()
 
-const l = client.private(`user.${user.value?.id}`).listen('.testing', (e: any) => {
-    console.log('Event', e)
+const posts = ref<any[]>([])
+
+const l = client.private(`chat.${user.value?.id}`).listen('.post.created', (e: any) => {
+    posts.value.push(e.post)
 })
 </script>
 
@@ -33,7 +35,11 @@ const l = client.private(`user.${user.value?.id}`).listen('.testing', (e: any) =
 
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-xl sm:rounded-lg"></div>
+                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-xl sm:rounded-lg">
+                    <div v-for="post in posts">
+                        <div>{{ post.message }}</div>
+                    </div>
+                </div>
             </div>
         </div>
     </NuxtLayout>
