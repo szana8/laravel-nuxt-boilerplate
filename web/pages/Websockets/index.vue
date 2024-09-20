@@ -9,11 +9,11 @@ definePageMeta({
 })
 
 useHead({
-    title: 'Dashboard',
+    title: 'Websockets',
     meta: [
         {
             name: 'description',
-            content: 'Dashboard content',
+            content: 'Websockets content',
         },
     ],
 })
@@ -88,13 +88,27 @@ client.private(`chat.${user.value?.id}`).listen('.post.created', (e: any) => {
 
                 <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-xl sm:rounded-lg p-8">
                     <form @submit.prevent="send">
-                        <div>
-                            <InputLabel for="message" value="Message" />
-                            <TextInput id="message" type="text" name="message" v-model="message" class="mt-1 block w-full" />
+                        <div class="py-2 px-4 mb-4 bg-white rounded-lg rounded-t-lg border border-gray-200 dark:bg-gray-800 dark:border-gray-700">
+                            <label for="comment" class="sr-only">Your comment</label>
+                            <textarea
+                                id="comment"
+                                rows="6"
+                                name="message"
+                                v-model="message"
+                                class="px-0 w-full text-sm text-gray-900 border-0 focus:ring-0 focus:outline-none dark:text-white dark:placeholder-gray-400 dark:bg-gray-800"
+                                placeholder="Write a comment..."
+                                required
+                            ></textarea>
                         </div>
 
                         <div class="flex items-center justify-end mt-4">
-                            <PrimaryButton class="ms-4" :class="{ 'opacity-25': false }" :disabled="false"> Send </PrimaryButton>
+                            <PrimaryButton
+                                class="inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-primary-700 rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800"
+                                :class="{ 'opacity-25': false }"
+                                :disabled="false"
+                            >
+                                Send
+                            </PrimaryButton>
                         </div>
                     </form>
                 </div>
