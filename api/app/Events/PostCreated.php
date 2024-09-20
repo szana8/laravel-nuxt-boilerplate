@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use App\Http\Resources\PostCreatedResource;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Broadcasting\Channel;
@@ -21,8 +22,7 @@ class PostCreated implements ShouldBroadcastNow
      * Create a new event instance.
      */
     public function __construct(
-        public Post $post,
-        public User $user,
+        public PostCreatedResource $post,
     )
     {
         //
@@ -41,7 +41,7 @@ class PostCreated implements ShouldBroadcastNow
     public function broadcastOn(): array
     {
         return [
-            new PrivateChannel('chat.'.$this->user->id),
+            new PrivateChannel('chat.'.$this->post->user->id),
         ];
     }
 }
