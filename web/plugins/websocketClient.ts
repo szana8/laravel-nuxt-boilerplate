@@ -2,14 +2,14 @@ import Echo from 'laravel-echo'
 import Pusher from 'pusher-js'
 
 export default defineNuxtPlugin(() => {
-    const config = useRuntimeConfig().public
+    const config = useRuntimeConfig().public.websocket
 
     const { session } = useUserSession()
 
     const options: any = {
         broadcaster: 'reverb',
         key: config.key,
-        wsHost: config.websocketURL,
+        wsHost: config.url,
         wsPort: config.port,
         wssPort: config.port,
         forceTLS: true,
@@ -20,7 +20,7 @@ export default defineNuxtPlugin(() => {
                 Authorization: `Bearer ${session.value.token}`,
             },
         },
-        authEndpoint: `https://${config.websocketURL}/api/broadcasting/auth`,
+        authEndpoint: `https://${config.url}/api/broadcasting/auth`,
     }
 
     const $websocketClient: Echo = new Echo({

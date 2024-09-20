@@ -13,9 +13,11 @@ export default defineNuxtConfig({
         clientId: process.env.CLIENT_ID,
         clientSecret: process.env.CLIENT_SECRET,
         public: {
-            websocketURL: process.env.WEBSOCKET_URL,
-            port: process.env.WEBSOCKET_PORT,
-            key: process.env.WEBSOCKET_KEY,
+            websocket: {
+                url: process.env.WEBSOCKET_URL,
+                port: process.env.WEBSOCKET_PORT,
+                key: process.env.WEBSOCKET_KEY,
+            }
         },
     },
     css: ['~/assets/css/main.css'],
