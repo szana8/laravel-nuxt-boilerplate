@@ -2,7 +2,6 @@
 import type Echo from 'laravel-echo'
 import { useUserSession } from '#imports'
 import { useWebsocketClient } from '~/composables/useWebsocketClient'
-import { useAsyncData } from '#app'
 
 definePageMeta({
     middleware: ['auth'],
@@ -23,6 +22,7 @@ const { user } = useUserSession()
 const message = ref('')
 const info = ref(true)
 const show = ref(false)
+const posts = ref<any[]>([])
 
 const send = () => {
     show.value = true
@@ -41,8 +41,6 @@ const send = () => {
             show.value = false
         })
 }
-
-const posts = ref<any[]>([])
 
 client.private(`chat.${user.value?.id}`).listen('.post.created', (e: any) => {
     posts.value.push(e.post)

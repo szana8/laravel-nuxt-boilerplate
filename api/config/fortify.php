@@ -15,7 +15,7 @@ return [
     |
     */
 
-    'guard' => 'web',
+    'guard' => 'api',
 
     /*
     |--------------------------------------------------------------------------
@@ -101,7 +101,7 @@ return [
     |
     */
 
-    'middleware' => [],
+    'middleware' => ['api'],
 
     /*
     |--------------------------------------------------------------------------
@@ -150,8 +150,8 @@ return [
         Features::updateProfileInformation(),
         Features::updatePasswords(),
         Features::twoFactorAuthentication([
-            'confirm' => true,
-            'confirmPassword' => true,
+            'confirm' => false,
+            'confirmPassword' => false,
             // 'window' => 0,
         ]),
     ],

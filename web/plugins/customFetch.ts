@@ -1,6 +1,8 @@
 export default defineNuxtPlugin(() => {
     const { session } = useUserSession()
 
+    const config = useRuntimeConfig()
+
     const $customFetch = $fetch.create({
         baseURL: process.env.BACKEND_URL,
         onRequest({ request, options, error }) {
@@ -16,6 +18,7 @@ export default defineNuxtPlugin(() => {
         },
         onResponse({ response }) {
             // ... handle response
+            console.log('Response', response)
         },
         onResponseError({ response }) {
             // handle response error

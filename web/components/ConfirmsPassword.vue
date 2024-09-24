@@ -33,7 +33,7 @@ const form = reactive({
 const passwordInput = ref(null)
 
 const startConfirmingPassword = () => {
-    axios.get(route('password.confirmation')).then((response) => {
+    /*axios.get(route('password.confirmation')).then((response) => {
         if (response.data.confirmed) {
             emit('confirmed')
         } else {
@@ -41,13 +41,13 @@ const startConfirmingPassword = () => {
 
             setTimeout(() => passwordInput.value.focus(), 250)
         }
-    })
+    })*/
 }
 
 const confirmPassword = () => {
     form.processing = true
 
-    axios
+    /*axios
         .post(route('password.confirm'), {
             password: form.password,
         })
@@ -61,7 +61,7 @@ const confirmPassword = () => {
             form.processing = false
             form.error = error.response.data.errors.password[0]
             passwordInput.value.focus()
-        })
+        })*/
 }
 
 const closeModal = () => {

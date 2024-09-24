@@ -1,8 +1,11 @@
 up:
 	docker compose up -d --force-recreate
 
-bash-php:
+php:
 	docker compose exec workspace bash
 
-bash-nuxt:
+nuxt:
 	docker compose exec nuxt bash
+
+reverb:
+	docker compose exec workspace php artisan reverb:start --debug

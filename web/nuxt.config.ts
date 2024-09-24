@@ -18,7 +18,7 @@ export default defineNuxtConfig({
                 url: process.env.WEBSOCKET_URL,
                 port: process.env.WEBSOCKET_PORT,
                 key: process.env.WEBSOCKET_KEY,
-            }
+            },
         },
     },
     css: ['~/assets/css/main.css'],

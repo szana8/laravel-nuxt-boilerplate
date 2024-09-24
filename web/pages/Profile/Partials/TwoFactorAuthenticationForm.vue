@@ -16,7 +16,7 @@ const confirmationForm = ref({
     code: '',
 })
 
-const twoFactorEnabled = computed(() => false)
+const twoFactorEnabled = ref(false)
 
 watch(twoFactorEnabled, () => {
     if (!twoFactorEnabled.value) {
@@ -25,8 +25,17 @@ watch(twoFactorEnabled, () => {
     }
 })
 
-const enableTwoFactorAuthentication = () => {
+const enableTwoFactorAuthentication = async () => {
     enabling.value = true
+
+    const { data } = await useFetch('api/user/two-factor-authentication', {
+        method: 'POST',
+        body: {
+            requires_confirmation: false,
+        },
+    }).then(() => {
+        Promise.all([showQrCode()])
+    })
 
     // router.post(route('two-factor.enable'), {}, {
     //     preserveScroll: true,
@@ -43,15 +52,30 @@ const enableTwoFactorAuthentication = () => {
 }
 
 const showQrCode = () => {
-    // return axios.get(route('two-factor.qr-code')).then(response => {
-    //     qrCode.value = response.data.svg;
-    // });
+    const { code } = useFetch('api/user/two-factor-qr-code', {
+        method: 'POST',
+    }).then((response) => {
+        qrCode.value = response.data.value.code
+        enabling.value = false
+        confirming.value = props.requiresConfirmation
+        twoFactorEnabled.value = true
+    })
+    //console.log(code)
+    // qrCode.value = code
+    // enabling.value = false
+    // confirming.value = props.requiresConfirmation
+    // twoFactorEnabled.value = true
 }
 
 const showSetupKey = () => {
-    // return axios.get(route('two-factor.secret-key')).then(response => {
-    //     setupKey.value = response.data.secretKey;
-    // });
+    // return useFetch('api/user/two-factor-qr-code', {
+    //     method: 'POST',
+    // }).then(async (response) => {
+    //     qrCode.value = response.data.svg
+    //     enabling.value = false
+    //     confirming.value = props.requiresConfirmation
+    //     twoFactorEnabled.value = true
+    // })
 }
 
 const showRecoveryCodes = () => {
@@ -112,8 +136,8 @@ const disableTwoFactorAuthentication = () => {
                 </p>
             </div>
 
-            <div v-if="twoFactorEnabled">
-                <div v-if="qrCode">
+            <div>
+                <div>
                     <div class="mt-4 max-w-xl text-sm text-gray-600 dark:text-gray-400">
                         <p v-if="confirming" class="font-semibold">
                             To finish enabling two factor authentication, scan the following QR code using your phone's authenticator application or enter the setup key and provide the generated OTP
@@ -166,7 +190,7 @@ const disableTwoFactorAuthentication = () => {
             <div class="mt-5">
                 <div v-if="!twoFactorEnabled">
                     <ConfirmsPassword @confirmed="enableTwoFactorAuthentication">
-                        <PrimaryButton type="button" :class="{ 'opacity-25': enabling }" :disabled="enabling"> Enable </PrimaryButton>
+                        <PrimaryButton type="button" :class="{ 'opacity-25': enabling }" :disabled="enabling" @click="enableTwoFactorAuthentication"> Enable </PrimaryButton>
                     </ConfirmsPassword>
                 </div>
 
