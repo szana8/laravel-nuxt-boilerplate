@@ -36,6 +36,7 @@ export default defineEventHandler(async (event) => {
                             name: userResponse.name,
                             email: userResponse.email,
                             two_factor_confirmed_at: userResponse.two_factor_confirmed_at,
+                            two_factor_enabled: userResponse.two_factor_enabled ?? false,
                             email_verified_at: userResponse.email_verified_at,
                             profile_photo_url: 'https://i.pravatar.cc/150?u=1',
                             profile_photo_path: '',
@@ -43,7 +44,6 @@ export default defineEventHandler(async (event) => {
                         token: response.access_token,
                     })
                 })
-
                 .catch((err: any) => {
                     status = 500
                     error = {

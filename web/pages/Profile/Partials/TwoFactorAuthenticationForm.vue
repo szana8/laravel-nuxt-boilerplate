@@ -1,9 +1,6 @@
 <script setup>
 import { ref, computed, watch } from 'vue'
-
-const props = defineProps({
-    requiresConfirmation: Boolean,
-})
+const { user, fetch } = useUserSession()
 
 const enabling = ref(false)
 const confirming = ref(false)
@@ -16,14 +13,13 @@ const confirmationForm = ref({
     code: '',
 })
 
-const twoFactorEnabled = ref(false)
+const twoFactorEnabled = computed(() => !enabling.value && user.value.two_factor_enabled)
 
-watch(twoFactorEnabled, () => {
-    if (!twoFactorEnabled.value) {
-        confirmationForm.reset()
-        confirmationForm.clearErrors()
-    }
-})
+// watch(twoFactorEnabled, () => {
+//     if (!twoFactorEnabled.value) {
+//         //
+//     }
+// })
 
 const enableTwoFactorAuthentication = async () => {
     enabling.value = true
@@ -33,46 +29,43 @@ const enableTwoFactorAuthentication = async () => {
         body: {
             requires_confirmation: false,
         },
+    }).then(() => {
+        fetch()
+        Promise.all([showQrCode(), showSetupKey(), showRecoveryCodes()]).then(() => {
+            enabling.value = false
+            confirming.value = true
+        })
     })
-        .then(() => {
-            Promise.all([showQrCode(), showSetupKey(), showRecoveryCodes()]).then(() => {
-                enabling.value = false
-                confirming.value = props.requiresConfirmation
-            })
-        })
-        .catch((error) => {
-            console.log(error)
-        })
-
-    enabling.value = false
-    confirming.value = props.requiresConfirmation
 }
 
 const showQrCode = async () => {
     return await $fetch('api/user/two-factor-qr-code')
-        .then((response) => {
-            qrCode.value = response.code
+        .then(async (response) => {
+            qrCode.value = response.data
         })
         .catch((error) => {
             console.log(error)
         })
 }
 
-const showSetupKey = () => {
-    // return useFetch('api/user/two-factor-qr-code', {
-    //     method: 'POST',
-    // }).then(async (response) => {
-    //     qrCode.value = response.data.svg
-    //     enabling.value = false
-    //     confirming.value = props.requiresConfirmation
-    //     twoFactorEnabled.value = true
-    // })
+const showSetupKey = async () => {
+    return await $fetch('api/user/two-factor-secret-key')
+        .then(async (response) => {
+            setupKey.value = response.data
+        })
+        .catch(async (error) => {
+            console.log(error)
+        })
 }
 
-const showRecoveryCodes = () => {
-    // return axios.get(route('two-factor.recovery-codes')).then(response => {
-    //     recoveryCodes.value = response.data;
-    // });
+const showRecoveryCodes = async () => {
+    return await $fetch('api/user/two-factor-recovery-codes')
+        .then(async (response) => {
+            recoveryCodes.value = response.data
+        })
+        .catch((error) => {
+            console.log(error)
+        })
 }
 
 const confirmTwoFactorAuthentication = () => {
@@ -127,8 +120,8 @@ const disableTwoFactorAuthentication = () => {
                 </p>
             </div>
 
-            <div>
-                <div>
+            <div v-if="twoFactorEnabled">
+                <div v-if="qrCode">
                     <div class="mt-4 max-w-xl text-sm text-gray-600 dark:text-gray-400">
                         <p v-if="confirming" class="font-semibold">
                             To finish enabling two factor authentication, scan the following QR code using your phone's authenticator application or enter the setup key and provide the generated OTP
@@ -159,7 +152,7 @@ const disableTwoFactorAuthentication = () => {
                             @keyup.enter="confirmTwoFactorAuthentication"
                         />
 
-                        <InputError :message="confirmationForm.errors.code" class="mt-2" />
+                        <InputError :message="'Error message'" class="mt-2" />
                     </div>
                 </div>
 

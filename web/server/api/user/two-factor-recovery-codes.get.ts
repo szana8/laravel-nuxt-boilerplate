@@ -3,7 +3,7 @@ export default defineEventHandler(async (event) => {
     let data: any = null
     let error: any = null
 
-    await $fetch('/user/two-factor-qr-code', {
+    await $fetch('/user/two-factor-recovery-codes', {
         baseURL: process.env.BACKEND_URL,
         method: 'GET',
         headers: {
@@ -13,7 +13,7 @@ export default defineEventHandler(async (event) => {
         },
     })
         .then(async (response: any) => {
-            data = response.svg
+            data = response
         })
         .catch((e) => {
             error = e
