@@ -1,10 +1,10 @@
 export default defineNuxtPlugin(() => {
     const { session } = useUserSession()
 
-    const config = useRuntimeConfig()
+    const baseUrl: string = useRuntimeConfig().public.BACKEND_URL as string
 
     const $customFetch = $fetch.create({
-        baseURL: process.env.BACKEND_URL,
+        baseURL: baseUrl,
         onRequest({ request, options, error }) {
             // Add default headers
             options.headers = (options.headers as { [key: string]: string }) || {}

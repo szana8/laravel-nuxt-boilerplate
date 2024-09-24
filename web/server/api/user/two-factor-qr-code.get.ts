@@ -1,7 +1,5 @@
 export default defineEventHandler(async (event) => {
-    const body = await readBody(event)
     const session = await getUserSession(event)
-
     let code: any = null
 
     await $fetch('/user/two-factor-qr-code', {
@@ -12,11 +10,13 @@ export default defineEventHandler(async (event) => {
             Accept: 'application/json',
             Authorization: `Bearer ${session.token}`,
         },
-    }).then(async (response: any) => {
-        //console.log('QR: ', response)
-
-        code = response.svg
     })
+        .then(async (response: any) => {
+            code = response.svg
+        })
+        .catch((error) => {
+            console.log(error)
+        })
 
     return { code }
 })

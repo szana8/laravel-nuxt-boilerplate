@@ -28,43 +28,34 @@ watch(twoFactorEnabled, () => {
 const enableTwoFactorAuthentication = async () => {
     enabling.value = true
 
-    const { data } = await useFetch('api/user/two-factor-authentication', {
+    await $fetch('api/user/two-factor-authentication', {
         method: 'POST',
         body: {
             requires_confirmation: false,
         },
-    }).then(() => {
-        Promise.all([showQrCode()])
     })
+        .then(() => {
+            Promise.all([showQrCode(), showSetupKey(), showRecoveryCodes()]).then(() => {
+                enabling.value = false
+                confirming.value = props.requiresConfirmation
+            })
+        })
+        .catch((error) => {
+            console.log(error)
+        })
 
-    // router.post(route('two-factor.enable'), {}, {
-    //     preserveScroll: true,
-    //     onSuccess: () => Promise.all([
-    //         showQrCode(),
-    //         showSetupKey(),
-    //         showRecoveryCodes(),
-    //     ]),
-    //     onFinish: () => {
-    //         enabling.value = false;
-    //         confirming.value = props.requiresConfirmation;
-    //     },
-    // });
+    enabling.value = false
+    confirming.value = props.requiresConfirmation
 }
 
-const showQrCode = () => {
-    const { code } = useFetch('api/user/two-factor-qr-code', {
-        method: 'POST',
-    }).then((response) => {
-        qrCode.value = response.data.value.code
-        enabling.value = false
-        confirming.value = props.requiresConfirmation
-        twoFactorEnabled.value = true
-    })
-    //console.log(code)
-    // qrCode.value = code
-    // enabling.value = false
-    // confirming.value = props.requiresConfirmation
-    // twoFactorEnabled.value = true
+const showQrCode = async () => {
+    return await $fetch('api/user/two-factor-qr-code')
+        .then((response) => {
+            qrCode.value = response.code
+        })
+        .catch((error) => {
+            console.log(error)
+        })
 }
 
 const showSetupKey = () => {
