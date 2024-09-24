@@ -1,6 +1,5 @@
 // server/plugins/session.ts
 export default defineNitroPlugin(() => {
-    // Called when we call useServerSession().clear() or clearUserSession(event)
     sessionHooks.hook('fetch', async (session, event) => {
         await $fetch('/api/user', {
             baseURL: process.env.BACKEND_URL,
