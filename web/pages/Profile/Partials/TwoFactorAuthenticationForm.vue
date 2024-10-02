@@ -1,5 +1,6 @@
-<script setup>
+<script setup lang="ts">
 import { ref, computed, watch } from 'vue'
+import type { NuxtFormErrors } from '~/types/ErrorBag.js'
 const { user, fetch } = useUserSession()
 
 const enabling = ref(false)
@@ -8,6 +9,11 @@ const disabling = ref(false)
 const qrCode = ref(null)
 const setupKey = ref(null)
 const recoveryCodes = ref([])
+let errors = ref(<NuxtFormErrors>{})
+
+const clearErrors = () => {
+    errors.value = ref(<NuxtFormErrors>{}).value
+}
 
 const confirmationForm = ref({
     code: '',
@@ -15,16 +21,10 @@ const confirmationForm = ref({
 
 const twoFactorEnabled = computed(() => !enabling.value && user.value.two_factor_enabled)
 
-// watch(twoFactorEnabled, () => {
-//     if (!twoFactorEnabled.value) {
-//         //
-//     }
-// })
-
 const enableTwoFactorAuthentication = async () => {
     enabling.value = true
 
-    await $fetch('api/user/two-factor-authentication', {
+    await $fetch('api/profile/two-factor-authentication', {
         method: 'POST',
         body: {
             requires_confirmation: false,
@@ -39,7 +39,7 @@ const enableTwoFactorAuthentication = async () => {
 }
 
 const showQrCode = async () => {
-    return await $fetch('api/user/two-factor-qr-code')
+    return await $fetch('api/profile/two-factor-qr-code')
         .then(async (response) => {
             qrCode.value = response.data
         })
@@ -49,7 +49,7 @@ const showQrCode = async () => {
 }
 
 const showSetupKey = async () => {
-    return await $fetch('api/user/two-factor-secret-key')
+    return await $fetch('api/profile/two-factor-secret-key')
         .then(async (response) => {
             setupKey.value = response.data
         })
@@ -59,7 +59,7 @@ const showSetupKey = async () => {
 }
 
 const showRecoveryCodes = async () => {
-    return await $fetch('api/user/two-factor-recovery-codes')
+    return await $fetch('api/profile/two-factor-recovery-codes')
         .then(async (response) => {
             recoveryCodes.value = response.data
         })
@@ -68,17 +68,27 @@ const showRecoveryCodes = async () => {
         })
 }
 
-const confirmTwoFactorAuthentication = () => {
-    // confirmationForm.post(route('two-factor.confirm'), {
-    //     errorBag: "confirmTwoFactorAuthentication",
-    //     preserveScroll: true,
-    //     preserveState: true,
-    //     onSuccess: () => {
-    //         confirming.value = false;
-    //         qrCode.value = null;
-    //         setupKey.value = null;
-    //     },
-    // });
+const confirmTwoFactorAuthentication = async () => {
+    clearErrors()
+
+    const { data, error, status } = await $fetch('api/profile/confirmed-two-factor-authentication', {
+        method: 'POST',
+        body: {
+            code: confirmationForm.value.code,
+        },
+    })
+
+    if (error && status === 422) {
+        for (const [key, value] of Object.entries(error)) {
+            errors.value[key] = value[0]
+        }
+    } else if (error) {
+        console.log(error)
+    } else {
+        confirming.value = false
+        qrCode.value = null
+        setupKey.value = null
+    }
 }
 
 const regenerateRecoveryCodes = () => {
@@ -152,7 +162,7 @@ const disableTwoFactorAuthentication = () => {
                             @keyup.enter="confirmTwoFactorAuthentication"
                         />
 
-                        <InputError :message="'Error message'" class="mt-2" />
+                        <InputError :message="errors.code" class="mt-2" />
                     </div>
                 </div>
 

@@ -1,22 +1,22 @@
 <script setup lang="ts">
-import type { BackendErrors, NuxtFormErrors } from '~/types/ErrorBag'
+import type { BackendErrors, BackendResponse, NuxtFormErrors } from '~/types/ErrorBag'
 
 const name = ref('')
 const email = ref('')
 const password = ref('')
 const terms = ref(false)
 const password_confirmation = ref('')
-const backEndError = ref(<BackendErrors>{})
-const hasBackendError = ref(false)
+const backEndError = ref((<BackendErrors>{}) | null)
 const hasTermsAndPrivacyPolicyFeature = ref(false)
 
 let errors = ref(<NuxtFormErrors>{})
 const processing = ref(false)
 
+const hasBackendError = computed(() => backEndError.length !== null)
+
 const clearErrors = () => {
     errors.value = ref(<NuxtFormErrors>{}).value
-    backEndError.value = ''
-    hasBackendError.value = false
+    backEndError.value = null
 }
 
 const submit = async () => {
@@ -41,7 +41,6 @@ const submit = async () => {
     }
 
     if (error && status !== 422) {
-        hasBackendError.value = true
         backEndError.value = error
     }
 }
@@ -53,7 +52,7 @@ const submit = async () => {
             <template #logo>
                 <AuthenticationCardLogo />
             </template>
-
+            {{ errors }}
             <ActionMessage v-if="backEndError" :on="hasBackendError" class="bg-red-300 text-red-800 rounded px-3 py-4 mb-4">{{ backEndError }}</ActionMessage>
 
             <form @submit.prevent="submit">

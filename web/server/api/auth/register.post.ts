@@ -1,6 +1,6 @@
-import type { LaravelValidationErrors } from '~/types/ErrorBag'
+import type { LaravelValidationErrors, BackendResponse } from '~/types/ErrorBag'
 
-export default defineEventHandler(async event => {
+export default defineEventHandler(async (event) => {
     const { name, email, password, password_confirmation } = await readBody(event)
 
     let data = {}
@@ -8,7 +8,7 @@ export default defineEventHandler(async event => {
     let pending = true
     let error: LaravelValidationErrors | string | null = {}
 
-    await $fetch('/register', {
+    await $fetch('api/register', {
         baseURL: process.env.BACKEND_URL,
         method: 'POST',
         headers: {
@@ -30,6 +30,7 @@ export default defineEventHandler(async event => {
         .catch(async (errs: any) => {
             status = errs.status
             pending = false
+            console.log(errs)
             if (errs.status === 422) {
                 error = errs.data.errors as LaravelValidationErrors
             } else {

@@ -12,4 +12,6 @@ Route::get('/user', function (Request $request) {
     ]);
 })->middleware('auth:api');
 
+// Route::post('/register', [\App\Http\Controllers\Auth\RegisteredUserController::class, 'store']);
+
 Route::post('/post', PostController::class)->middleware('auth:api');

@@ -19,3 +19,5 @@ export type NuxtFormErrors = {
 export type BackendErrors = {
     [key: number]: any
 }
+
+export type BackendResponse = { error: LaravelValidationErrors | string | null; data: any; status: number; pending: boolean }
