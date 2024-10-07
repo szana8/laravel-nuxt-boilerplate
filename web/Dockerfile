@@ -2,16 +2,18 @@ FROM node:latest
 
 RUN mkdir -p /usr/src/nuxt-app
 
-# COPY ./package.json /usr/src/nuxt-app
-
 WORKDIR /usr/src/nuxt-app
 
-COPY . .
+COPY . /usr/src/nuxt-app
 
-#RUN npm i nuxt
-#RUN npm cache clean --force
-# RUN npm run dev
+# WORKDIR /usr/src/nuxt-app
+
+#RUN npm run build
 
 EXPOSE 3000
 
-# CMD ["npm", "run", "start"]
+ENV NUXT_HOST=0.0.0.0
+
+ENV NUXT_PORT=3000
+
+#CMD [ "npm", "start" ]

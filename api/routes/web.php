@@ -3,5 +3,6 @@
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    broadcast(new \App\Events\OrderShipmentStatusUpdate(\App\Models\User::find(1)));
+    return 'Event dispatched';
 });
