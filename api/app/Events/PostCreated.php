@@ -3,13 +3,8 @@
 namespace App\Events;
 
 use App\Http\Resources\PostCreatedResource;
-use App\Models\Post;
-use App\Models\User;
-use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Broadcasting\PrivateChannel;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
@@ -23,8 +18,7 @@ class PostCreated implements ShouldBroadcastNow
      */
     public function __construct(
         public PostCreatedResource $post,
-    )
-    {
+    ) {
         //
     }
 

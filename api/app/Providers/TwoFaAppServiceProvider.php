@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\Contracts\TwoFactorAuthenticateInterface;
+use App\Contracts\Auth\TwoFactorAuthenticateInterface;
 use App\Services\TwoFactorAuthenticateService;
 use Illuminate\Contracts\Cache\Repository;
 use Illuminate\Support\ServiceProvider;

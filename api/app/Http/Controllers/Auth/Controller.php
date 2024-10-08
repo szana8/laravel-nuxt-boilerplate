@@ -11,9 +11,8 @@ class Controller
     /**
      * Get Authenticate Profile, use Token
      */
-
     public function __construct()
     {
-        $this->user = auth("api")->user();
+        $this->user = auth('api')->user();
     }
 }

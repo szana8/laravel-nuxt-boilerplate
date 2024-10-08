@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Contracts\TwoFactorAuthenticateInterface;
+use App\Contracts\Auth\TwoFactorAuthenticateInterface;
 use App\Http\Requests\Auth\AuthRequest;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 class AuthTwoFAController extends Controller
 {
@@ -23,6 +22,7 @@ class AuthTwoFAController extends Controller
                     'two_factor_enable' => true,
                 ]
             );
+
             return response()->json(
                 [
                     'enabled' => $authEnable,
@@ -50,9 +50,10 @@ class AuthTwoFAController extends Controller
 
         if ($flag) {
             $isDisabled = $user->disable2fa();
+
             return response()->json(
                 [
-                    "disabled" => $isDisabled,
+                    'disabled' => $isDisabled,
                 ]
             );
         }

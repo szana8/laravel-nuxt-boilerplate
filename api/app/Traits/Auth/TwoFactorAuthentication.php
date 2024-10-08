@@ -2,7 +2,7 @@
 
 namespace App\Traits\Auth;
 
-use App\Contracts\TwoFactorAuthenticateInterface;
+use App\Contracts\Auth\TwoFactorAuthenticateInterface;
 use BaconQrCode\Renderer\Color\Rgb;
 use BaconQrCode\Renderer\Image\SvgImageBackEnd;
 use BaconQrCode\Renderer\ImageRenderer;
@@ -14,11 +14,12 @@ use Illuminate\Support\Str;
 
 /**
  * Trait TwoFactorAuthentication
- * @package App\Traits\Auth
+ *
  * @property string|null two_factor_secret
  * @property string|null two_factor_recovery_codes
  * @property string|null two_factor_confirmed_at
  * @property string name
+ *
  * @method update(array $array)
  * @method forceFill(array $array)
  * @method save()
@@ -35,6 +36,7 @@ trait TwoFactorAuthentication
                 new SvgImageBackEnd()
             )
         ))->writeString($this->twoFactorQrCodeUrl());
+
         return trim(substr($svg, strpos($svg, "\n") + 1));
     }
 
@@ -52,6 +54,7 @@ trait TwoFactorAuthentication
         if ($this->two_factor_recovery_codes) {
             return json_decode(decrypt($this->two_factor_recovery_codes), true, 512, JSON_THROW_ON_ERROR);
         }
+
         return [];
     }
 
@@ -60,12 +63,12 @@ trait TwoFactorAuthentication
         return $this->update(
             [
                 'two_factor_secret' => encrypt(app(TwoFactorAuthenticateInterface::class)->generateSecretKey()),
-                "two_factor_recovery_codes" => encrypt(
+                'two_factor_recovery_codes' => encrypt(
                     json_encode(Collection::times(6, static function () {
                         return
                             [
-                                "code" => Str::random(10) . '-' . Str::random(10),
-                                "active" => true,
+                                'code' => Str::random(10).'-'.Str::random(10),
+                                'active' => true,
                             ];
                     })->all(), JSON_THROW_ON_ERROR)
                 ),
@@ -78,17 +81,16 @@ trait TwoFactorAuthentication
         return $this->update(
             [
                 'two_factor_secret' => null,
-                "two_factor_confirmed_at" => null,
-                "two_factor_recovery_codes" => null,
+                'two_factor_confirmed_at' => null,
+                'two_factor_recovery_codes' => null,
             ]
         );
     }
 
-    public function is2FA(): bool
+    public function hasEnabledTwoFactorAuthentication(): bool
     {
-        return !is_null($this->two_factor_secret) &&
-            !is_null($this->two_factor_confirmed_at) &&
-            !is_null($this->two_factor_recovery_codes);
+        return ! is_null($this->two_factor_secret) &&
+            ! is_null($this->two_factor_confirmed_at);
     }
 
     public function replaceRecoveryCode(string $code): void
@@ -98,6 +100,7 @@ trait TwoFactorAuthentication
                 if ($item['code'] === $code) {
                     $item['active'] = false;
                 }
+
                 return $item;
             })->toJson();
 

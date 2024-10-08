@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\Contracts\TwoFactorAuthenticateInterface;
+use App\Contracts\Auth\TwoFactorAuthenticateInterface;
 use App\Models\User;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Cache\Repository;
@@ -44,13 +44,15 @@ class TwoFactorAuthenticateService implements TwoFactorAuthenticateInterface
         $timestamp = $this->engine->verifyKeyNewer(
             $secret,
             $code,
-            optional($this->cache)->get($key = '2fa_codes.' . md5($code))
+            optional($this->cache)->get($key = '2fa_codes.'.md5($code))
         );
 
         if ($timestamp !== false) {
             optional($this->cache)->put($key, $timestamp, ($this->engine->getWindow() ?: 1) * 60);
+
             return true;
         }
+
         return false;
     }
 

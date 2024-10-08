@@ -20,6 +20,7 @@ class LogBroadcastMiddleware
             'headers' => $request->headers->all(),
             'content' => $request->getContent(),
         ]);
+
         return $next($request);
     }
 }

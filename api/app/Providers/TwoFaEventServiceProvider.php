@@ -13,6 +13,6 @@ class TwoFaEventServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Token::observe(TokenObserver::class);
+        //Token::observe(TokenObserver::class);
     }
 }

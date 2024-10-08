@@ -14,18 +14,18 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withBroadcasting(
-         __DIR__.'/../routes/channels.php',
+        __DIR__.'/../routes/channels.php',
         [
             'prefix' => 'api',
             'middleware' => [
                 LogBroadcastMiddleware::class,
-                'auth:api'
-            ]
+                'auth:api',
+            ],
         ]
     )
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->alias([
-            'client' => CheckClientCredentials::class
+            'client' => CheckClientCredentials::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
