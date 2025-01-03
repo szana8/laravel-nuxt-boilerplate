@@ -32,7 +32,7 @@ class OrderShipmentStatusUpdate implements ShouldBroadcastNow
     public function broadcastOn(): array
     {
         return [
-            new PrivateChannel('user.'.$this->user->id),
+            new PrivateChannel('user.' . $this->user->id),
         ];
     }
 }

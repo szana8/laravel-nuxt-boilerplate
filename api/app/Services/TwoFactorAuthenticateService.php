@@ -16,8 +16,7 @@ class TwoFactorAuthenticateService implements TwoFactorAuthenticateInterface
     public function __construct(
         protected Google2FA $engine,
         protected Repository $cache,
-    ) {
-    }
+    ) {}
 
     /**
      * @throws IncompatibleWithGoogleAuthenticatorException

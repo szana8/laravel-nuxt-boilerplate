@@ -8,6 +8,7 @@ use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
 
 class PostCreated implements ShouldBroadcastNow
 {
@@ -35,7 +36,7 @@ class PostCreated implements ShouldBroadcastNow
     public function broadcastOn(): array
     {
         return [
-            new PrivateChannel('chat.'.$this->post->user->id),
+            new PrivateChannel('chat.' . $this->post->user->id),
         ];
     }
 }

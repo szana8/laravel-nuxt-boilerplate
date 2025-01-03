@@ -15,9 +15,6 @@ class TwoFactorAuthenticationController extends Controller
     /**
      * Enable two factor authentication for the user.
      *
-     * @param Request $request
-     * @param EnableTwoFactorAuthentication $enable
-     * @return Responsable
      * @throws JsonException
      */
     public function store(Request $request, EnableTwoFactorAuthentication $enable): Responsable
@@ -29,10 +26,6 @@ class TwoFactorAuthenticationController extends Controller
 
     /**
      * Disable two factor authentication for the user.
-     *
-     * @param Request $request
-     * @param DisableTwoFactorAuthentication $disable
-     * @return Responsable
      */
     public function destroy(Request $request, DisableTwoFactorAuthentication $disable): Responsable
     {

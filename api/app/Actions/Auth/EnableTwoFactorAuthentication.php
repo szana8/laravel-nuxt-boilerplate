@@ -9,12 +9,10 @@ class EnableTwoFactorAuthentication
 {
     protected TwoFactorAuthenticateInterface $provider;
 
-
     public function __construct(TwoFactorAuthenticateInterface $provider)
     {
         $this->provider = $provider;
     }
-
 
     public function __invoke($user, $force = false): void
     {
