@@ -43,6 +43,7 @@ const send = () => {
 }
 
 client.private(`chat.${user.value?.id}`).listen('.post.created', (e: any) => {
+    console.log('Post: ', e.post)
     posts.value.push(e.post)
 })
 </script>

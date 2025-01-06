@@ -18,6 +18,7 @@ export default defineNuxtPlugin(() => {
         auth: {
             headers: {
                 Authorization: `Bearer ${session.value.token}`,
+                Accept: 'application/json',
             },
         },
         authEndpoint: `https://${config.url}/api/broadcasting/auth`,

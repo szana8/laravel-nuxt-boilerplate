@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2d05605fa9cb8ee76e8cd30e5b72635a",
+    "content-hash": "6d97f0aa75c4a03fb31839f3253e647b",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -253,26 +253,26 @@
         },
         {
             "name": "clue/redis-react",
-            "version": "v2.7.0",
+            "version": "v2.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/clue/reactphp-redis.git",
-                "reference": "2283690f249e8d93342dd63b5285732d2654e077"
+                "reference": "84569198dfd5564977d2ae6a32de4beb5a24bdca"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/clue/reactphp-redis/zipball/2283690f249e8d93342dd63b5285732d2654e077",
-                "reference": "2283690f249e8d93342dd63b5285732d2654e077",
+                "url": "https://api.github.com/repos/clue/reactphp-redis/zipball/84569198dfd5564977d2ae6a32de4beb5a24bdca",
+                "reference": "84569198dfd5564977d2ae6a32de4beb5a24bdca",
                 "shasum": ""
             },
             "require": {
-                "clue/redis-protocol": "0.3.*",
+                "clue/redis-protocol": "^0.3.2",
                 "evenement/evenement": "^3.0 || ^2.0 || ^1.0",
                 "php": ">=5.3",
                 "react/event-loop": "^1.2",
-                "react/promise": "^3 || ^2.0 || ^1.1",
-                "react/promise-timer": "^1.9",
-                "react/socket": "^1.12"
+                "react/promise": "^3.2 || ^2.0 || ^1.1",
+                "react/promise-timer": "^1.11",
+                "react/socket": "^1.16"
             },
             "require-dev": {
                 "clue/block-react": "^1.5",
@@ -305,7 +305,7 @@
             ],
             "support": {
                 "issues": "https://github.com/clue/reactphp-redis/issues",
-                "source": "https://github.com/clue/reactphp-redis/tree/v2.7.0"
+                "source": "https://github.com/clue/reactphp-redis/tree/v2.8.0"
             },
             "funding": [
                 {
@@ -317,7 +317,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-01-05T15:54:20+00:00"
+            "time": "2025-01-03T16:18:33+00:00"
         },
         {
             "name": "dasprid/enum",
@@ -10545,9 +10545,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "laravel/reverb": 10
-    },
+    "stability-flags": {},
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\AccessTokenController;
 use App\Http\Controllers\Auth\AuthTwoFAController;
 use App\Http\Controllers\Auth\RecoveryCodeController;
 use App\Http\Controllers\Auth\TwoFactorQrCodeController;
@@ -13,7 +14,7 @@ Route::get('/user', static function (Request $request) {
 
 Route::post('/post', PostController::class)->middleware('auth:api');
 
-Route::post('/oauth/token', [\App\Http\Controllers\Auth\AccessTokenController::class, 'issueToken']);
+Route::post('/oauth/token', [AccessTokenController::class, 'issueToken']);
 
 Route::middleware(['auth:api'])->as('two-factor')->group(static function () {
     Route::get('two-factor-qr-code', TwoFactorQrCodeController::class)->name('enable');
