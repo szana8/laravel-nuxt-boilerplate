@@ -6,6 +6,7 @@ use App\Contracts\Auth\TwoFactorAuthenticateInterface;
 use App\Http\Requests\Auth\AuthRequest;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
+use LogicException;
 
 class AuthTwoFAController extends Controller
 {
@@ -16,6 +17,10 @@ class AuthTwoFAController extends Controller
 
     public function store(AuthRequest $request)
     {
+        if (!$this->user instanceof User) {
+            throw new LogicException("User must be an instance of " . User::class);
+        }
+
         if ($this->verify($request)) {
             $authEnable = $this->user->update(
                 [
@@ -38,7 +43,7 @@ class AuthTwoFAController extends Controller
         $flag = false;
 
         if (is_null($user->two_factor_secret)) {
-            return [];
+            return response()->json([]);
         }
 
         if ($this->authentication->validRecoveryCode($request->get('code'), $this->user)) {
@@ -63,6 +68,10 @@ class AuthTwoFAController extends Controller
 
     public function verify(AuthRequest $request): bool
     {
+        if (!$this->user instanceof User) {
+            throw new LogicException("User must be an instance of " . User::class);
+        }
+
         return $this->authentication->verify(decrypt($this->user->two_factor_secret), $request->code);
     }
 }

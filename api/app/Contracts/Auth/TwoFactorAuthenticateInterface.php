@@ -22,5 +22,8 @@ interface TwoFactorAuthenticateInterface
      */
     public function verify(string $secret, string $code): bool;
 
+    /**
+     * Validate recovery code.
+     */
     public function validRecoveryCode(string $recoveryCode, User|Authenticatable $user): mixed;
 }

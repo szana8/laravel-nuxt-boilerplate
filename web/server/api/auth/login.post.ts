@@ -14,8 +14,8 @@ export default defineEventHandler(async (event) => {
             grant_type: 'password',
             client_id: process.env.CLIENT_ID,
             client_secret: process.env.CLIENT_SECRET,
-            username,
-            password,
+            username: username,
+            password: password,
             scope: '',
         }),
     })
@@ -23,8 +23,8 @@ export default defineEventHandler(async (event) => {
             await $fetch('/api/user', {
                 baseURL: process.env.BACKEND_URL,
                 headers: {
-                    'Content-Type': 'application/json',
                     Accept: 'application/json',
+                    'Content-Type': 'application/json',
                     Authorization: `Bearer ${response.access_token}`,
                 },
             })
@@ -38,8 +38,8 @@ export default defineEventHandler(async (event) => {
                             two_factor_confirmed_at: userResponse.two_factor_confirmed_at,
                             two_factor_enabled: userResponse.two_factor_enabled ?? false,
                             email_verified_at: userResponse.email_verified_at,
-                            profile_photo_url: 'https://i.pravatar.cc/150?u=1',
-                            profile_photo_path: '',
+                            profile_photo_url: userResponse.profile_photo_url ?? 'https://i.pravatar.cc/150?u=1',
+                            profile_photo_path: userResponse.profile_photo_path ?? '',
                         },
                         token: response.access_token,
                     })
@@ -52,7 +52,6 @@ export default defineEventHandler(async (event) => {
                 })
         })
         .catch(async (err: any) => {
-            console.log(err)
             status = 500
             error = {
                 message: 'The provided credentials are incorrect.',

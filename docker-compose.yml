@@ -27,7 +27,7 @@ services:
     #Nginx Service
     nginx:
         image: nginx:alpine
-        container_name: nginx
+        container_name: ${APP_CONTAINER_NAME}-nginx
         tty: true
         ports:
             - '${SSL_BACKEND_PORT:-443}:443'

@@ -1,4 +1,4 @@
-import type { LaravelValidationErrors, BackendResponse } from '~/types/ErrorBag'
+import type { LaravelValidationErrors } from '~/types/ErrorBag'
 
 export default defineEventHandler(async (event) => {
     const { name, email, password, password_confirmation } = await readBody(event)
@@ -30,7 +30,6 @@ export default defineEventHandler(async (event) => {
         .catch(async (errs: any) => {
             status = errs.status
             pending = false
-            console.log(errs)
             if (errs.status === 422) {
                 error = errs.data.errors as LaravelValidationErrors
             } else {
